@@ -48,6 +48,7 @@
     <Compile Include="TokenDefinitions\Html\EndTagOpen.cs" />
     <Compile Include="TokenDefinitions\Html\TagClose.cs" />
     <Compile Include="TokenDefinitions\ITokenDefinition.cs" />
+    <Compile Include="TokenDefinitions\TokenDefinition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

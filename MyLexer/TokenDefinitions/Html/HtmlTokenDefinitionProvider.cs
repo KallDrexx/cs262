@@ -9,7 +9,7 @@ namespace MyLexer.TokenDefinitions.Html
             if (lexer == null)
                 throw new ArgumentNullException("lexer");
 
-            lexer.Tokens = GetTokenDefinitions();
+            //lexer.TokenDefinitions = GetTokenDefinitions();
             lexer.IgnoreWhitespace = true;
         }
 

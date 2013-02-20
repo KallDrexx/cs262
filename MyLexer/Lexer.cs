@@ -7,13 +7,13 @@ namespace MyLexer
 {
     public class Lexer
     {
-        public ITokenDefinition[] Tokens { private get; set; }
+        public TokenDefinition[] TokenDefinitions { private get; set; }
 
         public bool IgnoreWhitespace { get; set; }
 
         public IEnumerable<ParseResult> Tokenize(string stringToParse)
         {
-            if (Tokens == null || Tokens.Length == 0)
+            if (TokenDefinitions == null || TokenDefinitions.Length == 0)
                 throw new InvalidOperationException("No tokens set to match on");
 
             var results = new List<ParseResult>();
@@ -23,9 +23,9 @@ namespace MyLexer
             while (stringToParse.Length > 0)
             {
                 bool validTokenFound = false;
-                foreach (var definition in Tokens)
+                foreach (var definition in TokenDefinitions)
                 {
-                    var regex = definition.RegexString;
+                    var regex = definition.RegexPattern;
                     var match = Regex.Match(stringToParse, regex);
                     if (!match.Success || match.Index != 0)
                         continue;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Moq;
 using MyLexer;
 using MyLexer.TokenDefinitions;
 using NUnit.Framework;
@@ -28,10 +27,8 @@ namespace MyLexerTests
         [Test]
         public void LexerReturnsTokensBasedOnTokenDefinition()
         {
-            var tokenDefinition = new Mock<ITokenDefinition>();
-            tokenDefinition.Setup(x => x.RegexString).Returns("[0-9]+");
-            tokenDefinition.Setup(x => x.TokenName).Returns("TestToken");
-            _lexer.Tokens = new[] {tokenDefinition.Object};
+            var tokenDefinition = new TokenDefinition {RegexPattern = @"\d+", TokenName = "TestToken"};
+            _lexer.TokenDefinitions = new[] {tokenDefinition};
 
             var results = _lexer.Tokenize("1234");
             Assert.IsNotNull(results, "Null results returned");
@@ -48,14 +45,10 @@ namespace MyLexerTests
         [Test]
         public void LexerReturnsTokensBasedOnOrderOfDefinitions()
         {
-            var tokenDefinition1 = new Mock<ITokenDefinition>();
-            var tokenDefinition2 = new Mock<ITokenDefinition>();
-            tokenDefinition1.Setup(x => x.RegexString).Returns("[0-9]");
-            tokenDefinition1.Setup(x => x.TokenName).Returns("TestToken1");
-            tokenDefinition2.Setup(x => x.RegexString).Returns("[0-9]+");
-            tokenDefinition2.Setup(x => x.TokenName).Returns("TestToken2");
+            var tokenDefinition1 = new TokenDefinition { RegexPattern = @"\d", TokenName = "TestToken1" };
+            var tokenDefinition2 = new TokenDefinition { RegexPattern = @"\d+", TokenName = "TestToken2" };
 
-            _lexer.Tokens = new[] { tokenDefinition1.Object, tokenDefinition2.Object };
+            _lexer.TokenDefinitions = new[] { tokenDefinition1, tokenDefinition2 };
 
             var results = _lexer.Tokenize("1234");
             Assert.IsNotNull(results, "Null results returned");
@@ -75,10 +68,8 @@ namespace MyLexerTests
         [Test]
         public void InvalidResultTokenReturnedWhenNoDefinitionMatches()
         {
-            var tokenDefinition = new Mock<ITokenDefinition>();
-            tokenDefinition.Setup(x => x.RegexString).Returns("[0-9]");
-            tokenDefinition.Setup(x => x.TokenName).Returns("TestToken1");
-            _lexer.Tokens = new[] {tokenDefinition.Object};
+            var tokenDefinition = new TokenDefinition { RegexPattern = @"\d", TokenName = "TestToken1" };
+            _lexer.TokenDefinitions = new[] {tokenDefinition};
 
             var results = _lexer.Tokenize("012\n456");
             var parseResults = results as ParseResult[] ?? results.ToArray();
@@ -104,10 +95,8 @@ namespace MyLexerTests
         [Test]
         public void TokenResultsShowStartingLineAndCharacterIndexOfTokenInString()
         {
-            var tokenDefinition = new Mock<ITokenDefinition>();
-            tokenDefinition.Setup(x => x.RegexString).Returns("[0-9]");
-            tokenDefinition.Setup(x => x.TokenName).Returns("TestToken1");
-            _lexer.Tokens = new[] { tokenDefinition.Object };
+            var tokenDefinition = new TokenDefinition { RegexPattern = @"\d", TokenName = "TestToken1" };
+            _lexer.TokenDefinitions = new[] { tokenDefinition };
 
             var results = _lexer.Tokenize("01\n23\n4");
             var parseResults = results as ParseResult[] ?? results.ToArray();
@@ -138,10 +127,8 @@ namespace MyLexerTests
         [Test]
         public void IgnoresWhiteSpaceWhenSet()
         {
-            var tokenDefinition = new Mock<ITokenDefinition>();
-            tokenDefinition.Setup(x => x.RegexString).Returns("[0-9]");
-            tokenDefinition.Setup(x => x.TokenName).Returns("TestToken1");
-            _lexer.Tokens = new[] { tokenDefinition.Object };
+            var tokenDefinition = new TokenDefinition { RegexPattern = @"\d", TokenName = "TestToken1" };
+            _lexer.TokenDefinitions = new[] { tokenDefinition };
 
             _lexer.IgnoreWhitespace = true;
 
@@ -157,10 +144,8 @@ namespace MyLexerTests
         [Test]
         public void WhiteSpaceNotIgnoredWhenNotSet()
         {
-            var tokenDefinition = new Mock<ITokenDefinition>();
-            tokenDefinition.Setup(x => x.RegexString).Returns("[0-9]");
-            tokenDefinition.Setup(x => x.TokenName).Returns("TestToken1");
-            _lexer.Tokens = new[] { tokenDefinition.Object };
+            var tokenDefinition = new TokenDefinition { RegexPattern = @"\d", TokenName = "TestToken1" };
+            _lexer.TokenDefinitions = new[] { tokenDefinition };
 
             _lexer.IgnoreWhitespace = false;
 
@@ -177,10 +162,8 @@ namespace MyLexerTests
         [Test]
         public void TabCountedAsWhitespace()
         {
-            var tokenDefinition = new Mock<ITokenDefinition>();
-            tokenDefinition.Setup(x => x.RegexString).Returns("[0-9]");
-            tokenDefinition.Setup(x => x.TokenName).Returns("TestToken1");
-            _lexer.Tokens = new[] { tokenDefinition.Object };
+            var tokenDefinition = new TokenDefinition { RegexPattern = @"\d", TokenName = "TestToken1" };
+            _lexer.TokenDefinitions = new[] { tokenDefinition };
 
             _lexer.IgnoreWhitespace = true;
 
