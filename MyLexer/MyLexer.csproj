@@ -39,15 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILexer.cs" />
     <Compile Include="Lexer.cs" />
     <Compile Include="ParseResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TokenDefinitions\BaseTokenDefinition.cs" />
-    <Compile Include="TokenDefinitions\Html\StartTagOpen.cs" />
-    <Compile Include="TokenDefinitions\Html\HtmlTokenDefinitionProvider.cs" />
-    <Compile Include="TokenDefinitions\Html\EndTagOpen.cs" />
-    <Compile Include="TokenDefinitions\Html\TagClose.cs" />
-    <Compile Include="TokenDefinitions\ITokenDefinition.cs" />
+    <Compile Include="TokenDefinitions\Html\HtmlTokenDefinitions.cs" />
     <Compile Include="TokenDefinitions\TokenDefinition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

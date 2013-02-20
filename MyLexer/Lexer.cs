@@ -5,7 +5,7 @@ using MyLexer.TokenDefinitions;
 
 namespace MyLexer
 {
-    public class Lexer
+    public class Lexer : ILexer
     {
         public TokenDefinition[] TokenDefinitions { private get; set; }
 

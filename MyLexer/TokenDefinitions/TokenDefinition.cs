@@ -1,6 +1,6 @@
 ﻿namespace MyLexer.TokenDefinitions
 {
-    public class TokenDefinition
+    public struct TokenDefinition
     {
         public string RegexPattern { get; set; }
         public string TokenName { get; set; }
