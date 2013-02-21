@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace MyLexerTests
 {
     [TestFixture]
-    public class HtmlTokenTests
+    public class HtmlTokenTests : BaseLexerTests
     {
         private HtmlTokenDefinitions _htmlDefinitions;
         private Lexer _realLexer;
@@ -54,35 +54,30 @@ namespace MyLexerTests
             const string test = "<b>Test</b>";
             var tokens = _realLexer.Tokenize(test).ToArray();
 
-            Assert.AreEqual(7, tokens.Length, "Incorrect number of tokens returned");
+            var expected = new[]
+            {
+                new ParseResult
+                {
+                    IsValidToken = true,
+                    TokenType = HtmlTokenDefinitions.StartTagOpenTokenType,
+                    Value = "<"
+                },
 
-            var token = tokens[0];
-            Assert.AreEqual(HtmlTokenDefinitions.StartTagOpenTokenType, token.TokenType, "First token's type was incorrect");
-            Assert.AreEqual("<", token.Value, "First token's value was incorrect");
+                new ParseResult {IsValidToken = true, TokenType = HtmlTokenDefinitions.WordTokenType, Value = "b"},
+                new ParseResult {IsValidToken = true, TokenType = HtmlTokenDefinitions.TagCloseTokenType, Value = ">"},
+                new ParseResult {IsValidToken = true, TokenType = HtmlTokenDefinitions.WordTokenType, Value = "Test"},
+                new ParseResult
+                {
+                    IsValidToken = true,
+                    TokenType = HtmlTokenDefinitions.EndTagOpenTokenType,
+                    Value = "</"
+                },
 
-            token = tokens[1];
-            Assert.AreEqual(HtmlTokenDefinitions.WordTokenType, token.TokenType, "Second token's type was incorrect");
-            Assert.AreEqual("b", token.Value, "Second token's value was incorrect");
+                new ParseResult {IsValidToken = true, TokenType = HtmlTokenDefinitions.WordTokenType, Value = "b"},
+                new ParseResult {IsValidToken = true, TokenType = HtmlTokenDefinitions.TagCloseTokenType, Value = ">"},
+            };
 
-            token = tokens[2];
-            Assert.AreEqual(HtmlTokenDefinitions.TagCloseTokenType, token.TokenType, "Third token's type was incorrect");
-            Assert.AreEqual(">", token.Value, "Third token's value was incorrect");
-
-            token = tokens[3];
-            Assert.AreEqual(HtmlTokenDefinitions.WordTokenType, token.TokenType, "Fourth token's type was incorrect");
-            Assert.AreEqual("Test", token.Value, "Fourth token's value was incorrect");
-
-            token = tokens[4];
-            Assert.AreEqual(HtmlTokenDefinitions.EndTagOpenTokenType, token.TokenType, "Fifth token's type was incorrect");
-            Assert.AreEqual("</", token.Value, "Fifth token's value was incorrect");
-
-            token = tokens[5];
-            Assert.AreEqual(HtmlTokenDefinitions.WordTokenType, token.TokenType, "Sixth token's type was incorrect");
-            Assert.AreEqual("b", token.Value, "Sixth token's value was incorrect");
-
-            token = tokens[6];
-            Assert.AreEqual(HtmlTokenDefinitions.TagCloseTokenType, token.TokenType, "Seventh token's type was incorrect");
-            Assert.AreEqual(">", token.Value, "Seventh token's value was incorrect");
+            TestTokenResults(expected, tokens);
         }
     }
 }
